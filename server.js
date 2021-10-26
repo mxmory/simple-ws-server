@@ -12,10 +12,11 @@ function onConnect(wsClient) {
     JSON.stringify({ type: "info", message: "Client disconnected from WS" });
   });
 
-  const getIntervalMessages = (count) => {
+  const getIntervalMessages = ({ blocking }) => {
     setInterval(() => {
       const rand = Math.floor(Math.random() * (1000 - 10 + 1) + 10);
-      wsClient.send(JSON.stringify({ type: "set_value", value: rand }));
+      const type = blocking ? "set_value_blocking" : "set_value";
+      wsClient.send(JSON.stringify({ type, value: rand }));
     }, 1000);
   };
 
@@ -24,7 +25,10 @@ function onConnect(wsClient) {
       const jsonMessage = JSON.parse(message);
       switch (jsonMessage.type) {
         case "get_queued_messages":
-          getIntervalMessages(10);
+          getIntervalMessages({ blocking: false });
+          break;
+        case "get_queued_messages_blocking":
+          getIntervalMessages({ blocking: true });
           break;
         default:
           console.log("Error. No such command");
