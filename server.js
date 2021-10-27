@@ -14,7 +14,11 @@ function onConnect(wsClient) {
 
   const getIntervalMessages = ({ blocking }) => {
     setInterval(() => {
+<<<<<<< HEAD
       const rand = Math.floor(Math.random() * 21 + 20);
+=======
+      const rand = Math.floor(Math.random() * 40 + 30);
+>>>>>>> 49fc73e4a6b3bb9a91844c24b74febfa56d9844e
       const type = blocking ? "set_value_blocking" : "set_value";
       wsClient.send(JSON.stringify({ type, value: rand }));
     }, 1000);
